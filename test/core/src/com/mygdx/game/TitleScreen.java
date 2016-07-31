@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import static com.badlogic.gdx.Gdx.app;
 import static com.badlogic.gdx.Gdx.input;
@@ -20,6 +22,13 @@ class TitleScreen extends BaseScreen {
         assert uiSkin != null;
         this.title = new Label("Shmup4J yay press space to start", uiSkin);
         stage.addActor(title);
+
+        title.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen(game));
+            }
+        });
     }
 
     @Override

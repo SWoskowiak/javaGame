@@ -20,7 +20,6 @@ cash
 discarded alien weaponry (powerups, they have durability)
 
 the idea is that you get easy things from the easy grind levels, it's like shooting fish in a barrel
-then the cha
 
  */
 
