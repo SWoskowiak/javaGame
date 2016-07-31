@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.ReflectionPool;
 
 import static com.badlogic.gdx.Gdx.app;
 import static com.badlogic.gdx.Gdx.input;
@@ -21,7 +20,6 @@ class TitleScreen extends BaseScreen {
         assert uiSkin != null;
         this.title = new Label("Shmup4J yay press space to start", uiSkin);
         stage.addActor(title);
-        ReflectionPool<Ship> rps;
     }
 
     @Override
