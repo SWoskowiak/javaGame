@@ -13,19 +13,19 @@ import static com.badlogic.gdx.Gdx.files;
 import static com.badlogic.gdx.Gdx.input;
 import static com.badlogic.gdx.Input.Keys;
 
-public class TitleScreen extends BaseScreen {
-    Skin uiSkin;
-    Label title;
+class TitleScreen extends BaseScreen {
+    private Skin uiSkin;
+    private Label title;
 
-    float movSpd = 10f;
+    private float movSpd = 10f;
 
     class InputProcessor extends InputAdapter {
     }
 
-    public TitleScreen(ShmupGame game) {
+    TitleScreen(ShmupGame game) {
         super(game);
         uiSkin = new Skin(files.internal("uiskin.json"));
-        this.title = new Label("Schmup4J", uiSkin);
+        this.title = new Label("Schmup4J yay press space to start", uiSkin);
         stage.addActor(title);
     }
 
@@ -52,9 +52,10 @@ public class TitleScreen extends BaseScreen {
         boolean moved = moveTitleX != 0f || moveTitleY != 0f;
 
         if (moved) {
-
             app.log("TitleScreen.act", "movSpd " + movSpd + "; title position " + title.getX() + "x" + title.getY());
         }
+
+        if (input.isKeyJustPressed(Keys.SPACE)) game.setScreen(new GameScreen(game));
 
         super.act(delta);
     }
