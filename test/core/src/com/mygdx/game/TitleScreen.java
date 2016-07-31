@@ -1,11 +1,15 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.game.actors.SpriteActor;
 
-import static com.badlogic.gdx.Gdx.app;
+import static com.badlogic.gdx.Gdx.graphics;
 import static com.badlogic.gdx.Gdx.input;
 import static com.badlogic.gdx.Input.Keys;
 
@@ -13,6 +17,7 @@ import static com.badlogic.gdx.Input.Keys;
 class TitleScreen extends BaseScreen {
     private static final String UI_SKIN_FILE = "uiskin.json";
     private Label title;
+    private SpriteActor spriteActor;
 
     private float movSpd = 10f;
 
@@ -29,31 +34,30 @@ class TitleScreen extends BaseScreen {
                 game.setScreen(new GameScreen(game));
             }
         });
+
+        spriteActor = new SpriteActor();
+        spriteActor.setSprite(new Sprite(game.assets.loadSync("ship.png", Texture.class)));
+        stage.addActor(spriteActor);
     }
 
     @Override
     public void act(float delta) {
-        float moveTitleX = 0f;
-        float moveTitleY = 0f;
+        float speed = 50f;
+        float newWidth = spriteActor.getWidth();
+        float newHeight = spriteActor.getHeight();
+        newHeight += (input.isKeyPressed(Keys.UP) ? speed : 0f) * delta;
+        newHeight += (input.isKeyPressed(Keys.DOWN) ? -speed : 0f) * delta;
+        newWidth += (input.isKeyPressed(Keys.RIGHT) ? speed : 0f) * delta;
+        newWidth += (input.isKeyPressed(Keys.LEFT) ? -speed : 0f) * delta;
 
+        float mouseX = input.getX();
+        float mouseY = input.getY();
+        Vector3 mousePos = stage.getCamera().unproject(new Vector3(mouseX, mouseY, 0));
+        spriteActor.setBounds(mousePos.x, mousePos.y, newWidth, newHeight);
 
-        if (input.isKeyPressed(Keys.A)) movSpd += 1f;
-        if (input.isKeyPressed(Keys.Z)) movSpd -= 1f;
-
-        if (input.isKeyPressed(Keys.DOWN)) moveTitleY -= delta * movSpd;
-        if (input.isKeyPressed(Keys.UP)) moveTitleY += delta * movSpd;
-        if (input.isKeyPressed(Keys.LEFT)) moveTitleX -= delta * movSpd;
-        if (input.isKeyPressed(Keys.RIGHT)) moveTitleX += delta * movSpd;
-
-        title.moveBy(moveTitleX, moveTitleY);
-
-        boolean moved = moveTitleX != 0f || moveTitleY != 0f;
-
-        if (moved) {
-            app.log("TitleScreen.act", "movSpd " + movSpd + "; title position " + title.getX() + "x" + title.getY());
-        }
-
-        if (input.isKeyJustPressed(Keys.SPACE)) game.setScreen(new GameScreen(game));
+        float screenWidth = graphics.getWidth();
+        float screenHeight = graphics.getHeight();
+        title.setText("mouse pos: " + mousePos + "; screen dim: " + screenWidth + ", " + screenHeight);
 
         super.act(delta);
     }

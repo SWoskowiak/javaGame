@@ -1,5 +1,11 @@
 package com.mygdx.game.components;
 
-public class Component {
-    Entity entity;
+import com.badlogic.gdx.utils.Pool;
+
+public class Component implements Pool.Poolable {
+    public Entity entity;
+
+    public void reset() {
+        entity = null;
+    }
 }
