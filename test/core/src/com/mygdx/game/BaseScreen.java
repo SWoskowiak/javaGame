@@ -5,15 +5,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import static com.badlogic.gdx.Gdx.gl20;
+import static com.badlogic.gdx.Gdx.input;
 
 
-public class BaseScreen extends ScreenAdapter {
-    protected Stage stage;
-    protected ShmupGame game;
+class BaseScreen extends ScreenAdapter {
+    Stage stage;
+    ShmupGame game;
 
-    public BaseScreen(ShmupGame game) {
+    BaseScreen(ShmupGame game) {
         this.game = game;
         this.stage = new Stage();
+        input.setInputProcessor(this.stage);
     }
 
     @Override
@@ -22,11 +24,12 @@ public class BaseScreen extends ScreenAdapter {
         draw(delta);
     }
 
-    protected void act(float delta) {
+    public void act(float delta) {
         stage.act(delta);
     }
 
-    protected void draw(float delta) {
+    @SuppressWarnings("WeakerAccess")
+    void draw(float delta) {
         gl20.glClearColor(0, 0, 0, 1);
         gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
